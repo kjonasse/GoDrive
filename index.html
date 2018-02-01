@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Google Sign In -->
+    <!-- <meta name="google-signin-client_id" content="60868714643-vst5b8ksjt6hfju5kmiqkmr2ubhfido5.apps.googleusercontent.com"> -->
+
+    <title>GoDrive</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+        type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+
+    <!-- Google Sign-in -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="60868714643-bgfobuueah0kb4qdpo4iicq4fj0cciat.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle">
+      
+        <i class="fa fa-bars"></i>
+    
+    </a>
+
+    <nav id="sidebar-wrapper">
+
+        <ul class="sidebar-nav">
+
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
+          
+                <i class="fa fa-times"></i>
+        
+            </a>
+
+            <li class="sidebar-brand">
+                <a class="js-scroll-trigger" href="#top">Home</a>
+            </li>
+
+            <li>
+                <a class="js-scroll-trigger" href="#about">About</a>
+            </li>
+
+            <li>
+                <a class="js-scroll-trigger" href="#log">Entry Log</a>
+            </li>
+
+            <li>
+                <a class="js-scroll-trigger" href="#list">Log List</a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <!-- Header -->
+    <header class="header" id="top">
+        <div class="text-vertical-center">
+            <img id="header-image" class="mt-.5 img" src="assets/images/godrive.png" alt="GoDrive Logo" style="width:auto;height:150px;">
+            <div id="tagline" class="text-white">
+                <h2>The easiest way to plan your trips and keep track of the hours you have driven.</h2>
+            </div>
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about">
+
+        <div class="container text-center">
+
+            <h2>DRIVING LOG TO ADVANCE TO N.C. LEVEL 2 LIMITED PROVISIONAL DRIVER LICENSE</h2>
+            <br>
+
+            <p align="left"><b>Standard North Carolina Requirements:</b></p>
+
+            <ul>
+
+                <li>Complete a minimum of 60 hours of driving.</li>
+                <li>No more than 10 hours per week may count toward the 60 hours.</li>
+                <li>At least 10 of the 60 hours must be at night</li>
+                <li>A supervising driver must be a parent, grandparent, or guardian of the permit holder or a responsible person
+                    approved by the parent or guardian, and must be a licensed driver who has been licensed for at least
+                    five years</li>
+
+            </ul>
+
+        </div>
+        <!-- /.container -->
+
+    </section>
+    <!-- Callout -->
+    <aside class="callout" id="log">
+        <div class="text-center">
+            <h1>Plan and Log</h1>
+        </div>
+        <hr>
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="panel panel-primary">
+                    <br>
+
+                    <div class="text-center panel-heading">
+                    </div>
+                    <div class="panel-body">
+
+                        <form id="Form" name="Form" action="/action_page_post.php" onsubmit="return validateForm()" method="post">
+                            <div class="form-group">
+                                <label for="dateInput">Date (MM/DD) </label>
+                                <input type="text" class="form-control" id="dateInput" placeholder="01/01" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="start">Start Location</label>
+                                <input type="text" class="form-control" id="start" placeholder="UNC Charlotte">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end">End Location</label>
+                                <input type="text" class="form-control" id="end" placeholder="Uptown Charlotte">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="timeOfDay">Day or Night?</label>
+                                <input type="text" class="form-control" id="timeOfDay" placeholder="Day">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="weatherInput">Clear or Rain?</label>
+                                <!-- <label class="milTime">&nbsp;(HH:mm - Military)</label> -->
+                                <input type="" class="form-control" id="weatherInput" placeholder="Rain" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="driveType">City or Highway?</label>
+                                <input type="text" class="form-control" id="driveType" placeholder="City">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="logHours">Hours (Round to nearest half hour)</label>
+                                <input type="text" class="form-control" id="logHours" placeholder=".5">
+                            </div>
+
+                            <button type="submit" class="btn btn-default" id="add-log">Submit</button>
+
+                        </form>
+
+                    </div>
+                    <!-- Panel Body End -->
+                </div>
+                <!-- Panel Default End -->
+            </div>
+            <!-- Col End -->
+
+            <div class="col-md-6">
+
+                <div id="map"></div>
+                <div id="infowindow-content">
+                    <img src="" width="16" height="16" id="place-icon">
+                    <span id="place-name" class="title text-primary"></span><br>
+                    <span id="place-address" class="text-primary"></span>
+                </div>
+                <br>
+                <div class="text-center" id="weather">
+                </div>
+                <div class="text-center" id="timeDriven">
+                </div>
+            </div>
+
+        </div>
+        <!-- Row End -->
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+
+            </div>
+
+        </div>
+
+        <div class="row" id="list">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Current Driver's Log</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-responsive" id="log-Table" style="background-color: none !important; color: none">
+                            <thead>
+                                <tr>
+                                    <th>Date (MM/DD)</th>
+                                    <th>Day/Night</th>
+                                    <th>Sunny/Rain</th>
+                                    <th>Highway/City</th>
+                                    <th>Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logTable">
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Panel Body End -->
+                </div>
+                <!-- Panel Default End -->
+            </div>
+            <!-- Col End -->
+
+        </div>
+
+
+        <div class="row">
+
+
+    </aside>
+
+
+    </div>
+    </div>
+    </div>
+
+    </div>
+    <!-- /.col-lg-10 -->
+
+    </div>
+    <!-- /.container -->
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto text-center">
+
+                    <hr class="small">
+                    <p class="text-muted">Copyright &copy; GoDrive 2017</p>
+                </div>
+
+            </div>
+
+            <a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
+        
+            <i class="fa fa-chevron-up fa-fw fa-1x"></i>
+     
+        </a>
+
+    </footer>
+
+    <!-- Google Maps -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjHRGiUjezd6cX9yf7Ci-U4drbZOIxXa4&libraries=places&callback=initMap"></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="assets/javascript/stylish-portfolio.js"></script>
+    <script src="assets/javascript/logic.js"></script>
+
+</body>
+
+</html>
